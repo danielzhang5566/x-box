@@ -1,0 +1,18 @@
+{
+  "name": "x-box",
+  "version": "1.0.0",
+  "description": "Chrome浏览器插件，集合一些小工具，完善ing~",
+  "main": "index.js",
+  "scripts": {
+    "build": "node ./build/build-zip.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zeakhold/x-box.git"
+  },
+  "author": "zhangzhihao10",
+  "license": "ISC",
+  "devDependencies": {
+    "jszip": "^3.1.5"
+  }
+}

@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 180px;
+    font-size: 14px;
+    font-family: Hiragino Sans GB,微软雅黑,黑体,Arial,sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 10px;
+    background: #ff442e;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.header .title{
+
+}
+
+.menu {
+    list-style-type: none;
+}
+
+.menu li {
+    background-size: 20px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.214;
+    margin-top: 1px;
+    border-top: 1px dashed #ccc;
+    padding: 11px 10px 11px 20px;
+    position: relative;
+    color: #34495e;
+}
+
+.menu li:hover{
+    background-color: #ECF0F1;
+}
+
+/*** 横条容器 ***/
+.box {
+    cursor: pointer;
+}
+
+.box .box-container {
+    display: flex;
+    align-items: center;
+
+    /* 点击穿透！！ 让浏览器的点击事件忽略box-container这一层 */
+    pointer-events: none;
+}
+
+.box .icon{
+    width: 18px;
+    height: 18px;
+    background-position: 0;
+    border: none;
+    margin-right: 8px;
+}
+
+.box .text{
+
+}
+
+
+/*** 居中容器 ***/
+
+/* 水平居中 */
+.box-horizontal-center {
+   display: flex;
+   justify-content: center;
+}
+/* 垂直居中 */
+.box-vertical-center {
+   display: flex;
+   align-items: center;
+}
+/* 水平垂直居中 */
+.box-center {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+
+
+/*** 通用样式 ***/
+.gray {
+    color: #c1c1c1 !important;
+}
+
+.disabled {
+    cursor: not-allowed !important;
+}
+
+.normal {
+    cursor: default !important;
+}
