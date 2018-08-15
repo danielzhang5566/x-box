@@ -1,0 +1,10 @@
+.note
+.data
+.idea
+node_modules
+TODO.md
+.note
+test.html
+
+*.zip
+package-lock.json
