@@ -40,7 +40,7 @@ let Bonus = {
 
     /**
      * 是否可以获得加班餐补
-     * A. 正常工作日，以9点上班为准，加班到20::00可报销餐补（上班晚于9点则顺延, 相当于上班10h）
+     * A. 正常工作日，以9点上班为准，加班到20::00可报销餐补（上班晚于9点则顺延, 相当于上班11h）
      * B. 周末及节假日，加班时间超过4个小时则可报销餐补
      *
      * @param  {String} date   加班日期
@@ -55,10 +55,10 @@ let Bonus = {
         let isWeekend = new Date(date).getDay() % 6 == 0; // 是否周末
 
         if (!isWeekend) {    // A. 正常工作日
-            // 上班总时长够10h
+            // 上班总时长够11h
             // 上班打卡11 AM之前
             // 下班打卡8 PM之后
-            return hours >= 10 &&
+            return hours >= 11 &&
                 beginTime.getHours() < 11 &&
                 endTime.getHours() >= 20
 

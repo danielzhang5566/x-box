@@ -39,7 +39,7 @@ let Bonus = {
 
     /**
      * 是否可以获得加班打车报销
-     * A. 正常工作日，超过21:00可报销打车费用
+     * A. 正常工作日，上班时长达到12小时并且21:00后下班可报销打车费用
      * B. 周末及节假日，加班时间超过3个小时则可报销餐补
      *
      * @param  {String} date   加班日期
@@ -54,9 +54,9 @@ let Bonus = {
         let isWeekend = new Date(date).getDay() % 6 == 0; // 是否周末
 
         if (!isWeekend) {    // A. 正常工作日
+            // 上班总时长够12h
             // 下班打卡21:00之后
-            return endTime.getHours() >= 21
-
+            return hours >= 12 && endTime.getHours() >= 21
         } else {            // B. 周末（节假日偷懒就不算了）
             // 上班总时长够3h即可
             return hours >= 3
