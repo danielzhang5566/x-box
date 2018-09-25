@@ -2,7 +2,7 @@
 
 /**
  * 简化选择器
- * @param  {String} ele 选择元素 ('body')/('#idName')/('.banner a')
+ * @param  {String} elem 选择元素 ('body')/('#idName')/('.banner a')
  * @return {Object} 返回匹配的第一个元素对象
  */
 function $(elem) {
