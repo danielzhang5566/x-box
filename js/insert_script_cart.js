@@ -9,7 +9,7 @@ function $(elem) {
     return document.querySelector(elem);
 }
 
-let Bonus = {
+Bonus = {
 
     onReady: function () {
         $('#content').childNodes.length && Bonus.calc()
@@ -35,6 +35,12 @@ let Bonus = {
                 alert('补贴提醒：' + '可打车报销 ' + overDays + ' 天') :
                 alert('补贴提醒：' + '很遗憾，您没有补贴哦，努力加班吧：）')
         }, 0)
+    },
+
+    clean: function () {
+        $('#content').childNodes.forEach(($item, i) => {
+            $item.style.backgroundColor = 'white'
+        })
     },
 
     /**
@@ -65,7 +71,7 @@ let Bonus = {
 }
 
 if (window.location.href === "http://kaoqin.jd.com/kaoqin/KaoQin") {
-
+    Bonus.clean()
     Bonus.onReady()
 
 } else {
