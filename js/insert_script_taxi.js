@@ -24,7 +24,7 @@ Bonus = {
                 begin = $cols[8].innerText,
                 end = $cols[9].innerText;
 
-            if (begin && end && Bonus.isCanGetCartBonus(date, begin, end)) {
+            if (begin && end && Bonus.isCanGetTaxiBonus(date, begin, end)) {
                 ++overDays
                 $item.style.backgroundColor = 'yellow'
             }
@@ -53,7 +53,7 @@ Bonus = {
      * @param  {String} end    下班打卡时间
      * @return {Boolean} 返回是否可报销打车费用
      */
-    isCanGetCartBonus: function (date, begin, end) {
+    isCanGetTaxiBonus: function (date, begin, end) {
         let beginTime = new Date(date + ' ' + begin);
         let endTime = new Date(date + ' ' + end);
         let hours = (endTime - beginTime) / 1000 / 60 / 60;     // 总上班时长(h)

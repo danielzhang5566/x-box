@@ -19,7 +19,7 @@ zip.folder('x-box/img').file('smile.png', fs.readFileSync('./img/smile.png'))
 
 zip.folder('x-box/css').file('popup.css', fs.readFileSync('./css/popup.css'))
 
-zip.folder('x-box/js').file('insert_script_cart.js', fs.readFileSync('./js/insert_script_cart.js'))
+zip.folder('x-box/js').file('insert_script_taxi.js', fs.readFileSync('./js/insert_script_taxi.js'))
 zip.folder('x-box/js').file('insert_script_meal.js', fs.readFileSync('./js/insert_script_meal.js'))
 zip.folder('x-box/js').file('popup.js', fs.readFileSync('./js/popup.js'))
 

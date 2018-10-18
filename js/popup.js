@@ -20,8 +20,8 @@ let JDTools = {
                     case 'calculate-meal-bonus':
                         me.calculateMealBonus();
                         break;
-                    case 'calculate-cart-bonus':
-                        me.calculateCartBonus();
+                    case 'calculate-taxi-bonus':
+                        me.calculateTaxiBonus();
                         break;
                     case 'waiting-for-u':
                         me.waitingForU();
@@ -39,9 +39,9 @@ let JDTools = {
         // 注入餐补计算脚本
         chrome.tabs.executeScript(null, {file: "./js/insert_script_meal.js"});
     },
-    calculateCartBonus() {
+    calculateTaxiBonus() {
         // 注入打车计算脚本
-        chrome.tabs.executeScript(null, {file: "./js/insert_script_cart.js"});
+        chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
     },
     waitingForU() {
 

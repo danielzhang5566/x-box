@@ -14,7 +14,7 @@ Chrome浏览器插件，集合一些小工具，完善ing~
 - [x] 自动化打包成zip（供上传Chrome Web Store）
 - [ ] ~~source.jd.com仓库树形展开~~(安全原因废弃)
 - [ ] [加班餐补报销指引](./guide/meal.md)
-- [ ] [加班打车报销指引](./guide/cart.md)
+- [ ] [加班打车报销指引](./guide/taxi.md)
 - [ ] （陆续添加中...）
 
 
