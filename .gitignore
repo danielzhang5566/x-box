@@ -1,6 +1,8 @@
 .note
 .data
 .idea
+.DS_Store
+.vscode
 node_modules
 TODO.md
 .note
