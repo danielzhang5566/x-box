@@ -80,5 +80,5 @@ if (window.location.href === "http://kaoqin.jd.com/kaoqin/KaoQin") {
     Bonus.onReady()
 
 } else {
-    alert('请到JD打卡机页面再使用：http://kaoqin.jd.com/kaoqin/KaoQin')
+    alert('请在【打卡机页面】使用本功能：http://kaoqin.jd.com/kaoqin/KaoQin')
 }

@@ -1,5 +1,5 @@
 # X-BOX工具箱 :sunny: 
-[![Latest Version](https://img.shields.io/badge/Latest_Version-1.0.0-blue.svg)](https://codeload.github.com/zeakhold/chrome-extension/zip/master) [![Chrome Web Store](https://img.shields.io/badge/Install-_Chrome_Web_Store-brightgreen.svg)](https://chrome.google.com/webstore/detail/jd%E5%B7%A5%E5%85%B7%E7%AE%B1/kooggikciihidkbkihkdpmkjajcmgogn) 
+[![Latest Version](https://img.shields.io/badge/Latest_Version-1.0.0-blue.svg)](https://codeload.github.com/zeakhold/chrome-extension/zip/master) [![Chrome Web Store](https://img.shields.io/badge/Install-_Chrome_Web_Store-brightgreen.svg)](https://chrome.google.com/webstore/detail/x-box/ghjnofmahfaomccknicfliidomnmimdd) 
  
 Chrome浏览器插件，集合一些小工具，完善ing~
 
@@ -8,18 +8,18 @@ Chrome浏览器插件，集合一些小工具，完善ing~
 
 ## TODO
 
-- [ ] 插件打包发布Chrome Web Store
+- [x] 插件打包发布Chrome Web Store
 - [x] 加班餐补计算功能
 - [x] 加班打车计算功能
 - [x] 自动化打包成zip（供上传Chrome Web Store）
-- [ ] ~~source.jd.com仓库树形展开~~(安全原因废弃)
+- [ ] ~~source代码仓库树形展开~~(安全原因废弃)
 - [ ] [加班餐补报销指引](./guide/meal.md)
 - [ ] [加班打车报销指引](./guide/taxi.md)
 - [ ] （陆续添加中...）
 
 
 ## 安装插件
-前往[Chrome Web Store](https://chrome.google.com/webstore/detail/jd%E5%B7%A5%E5%85%B7%E7%AE%B1/kooggikciihidkbkihkdpmkjajcmgogn) 安装<JD工具箱>
+前往[Chrome Web Store](https://chrome.google.com/webstore/detail/x-box/ghjnofmahfaomccknicfliidomnmimdd) 安装<JD工具箱>
 
     
 
