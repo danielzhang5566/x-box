@@ -27,6 +27,8 @@ Bonus = {
 
             if (begin && end && Bonus.isCanGetMealBonus(date, begin, end)) {
                 ++overDays
+                $cols[1].innerText = '✓ ' + $cols[1].innerText
+                $cols[9].innerText += ' ✓'
                 $item.style.backgroundColor = 'yellow'
             }
         })
