@@ -4,7 +4,7 @@
   "description": "Chrome浏览器插件，集合一些小工具，完善ing~",
   "main": "index.js",
   "scripts": {
-    "build": "node ./build/build-zip.js"
+    "build": "node ./build/build-zip2.js"
   },
   "repository": {
     "type": "git",
@@ -13,6 +13,7 @@
   "author": "zhangzhihao10",
   "license": "ISC",
   "devDependencies": {
+    "archiver": "^3.0.0",
     "jszip": "^3.1.5"
   }
 }
