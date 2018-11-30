@@ -1,3 +1,9 @@
+// 当前页面url
+let currentUrl = ''
+chrome.tabs.getSelected(null, function(tab) {
+    currentUrl = tab.url
+})
+
 let JDTools = {
     data: {
         name: 'JD工具箱'
@@ -36,12 +42,16 @@ let JDTools = {
         });
     },
     calculateMealBonus() {
-        // 注入餐补计算脚本
-        chrome.tabs.executeScript(null, {file: "./js/insert_script_meal.js"});
+        if(isOnLegalPage('http://kaoqin.jd.com/kaoqin/KaoQin')) {
+            // 注入餐补计算脚本
+            chrome.tabs.executeScript(null, {file: "./js/insert_script_meal.js"});
+        }
     },
     calculateTaxiBonus() {
-        // 注入打车计算脚本
-        chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
+        if(isOnLegalPage('http://kaoqin.jd.com/kaoqin/KaoQin')) {
+            // 注入打车计算脚本
+            chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
+        }
     },
     waitingForU() {
 
@@ -60,6 +70,23 @@ let JDTools = {
 function $(elem) {
     return document.querySelector(elem);
 }
+
+/**
+ * 判断当前是否在合法页面
+ * @param  {String} url 目标页面
+ * @return {Boolean}
+ */
+function isOnLegalPage(url) {
+    const pattern = new RegExp(url, 'i')
+
+    if (pattern.test(currentUrl)) {
+        return true
+    } else {
+        alert(`请在【${url}】使用本功能`)
+        return false
+    }
+}
+
 
 document.addEventListener("DOMContentLoaded", function (event) {
     JDTools.init();

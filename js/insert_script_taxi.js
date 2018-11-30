@@ -72,10 +72,5 @@ Bonus = {
     }
 }
 
-if (window.location.href === "http://kaoqin.jd.com/kaoqin/KaoQin") {
-    Bonus.clean()
-    Bonus.onReady()
-
-} else {
-    alert('请在【打卡机页面】使用本功能：http://kaoqin.jd.com/kaoqin/KaoQin')
-}
+Bonus.clean()
+Bonus.onReady()
