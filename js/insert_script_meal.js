@@ -33,6 +33,8 @@ Bonus = {
             }
         })
 
+        $('#record').innerHTML += `<div style="margin: 30px 0 10px; font-size: 24px;text-align: center;">加班${overDays}天 x 15¥ = ${overDays * MONEY_PRE_DAY}¥</div>`
+
         setTimeout(() => {
             overDays ?
                 alert('补贴提醒：' + '加班 ' + overDays + ' 天,获取 ￥' + overDays * MONEY_PRE_DAY + ' 元') :
