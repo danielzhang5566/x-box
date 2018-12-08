@@ -19,7 +19,7 @@
   },
   "permissions": [
     "tabs",
-    "http://kaoqin.jd.com",
-    "http://erp.jd.com"
+    "http://kaoqin.jd.com/",
+    "http://erp.jd.com/"
   ]
 }
