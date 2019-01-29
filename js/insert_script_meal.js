@@ -33,7 +33,8 @@ Bonus = {
                 overNumCounts += num
 
                 $cols[1].innerText = '✓ ' + $cols[1].innerText
-                $cols[9].innerText += (isWeekend ? ' [周]':' [工]') + hours + 'h'
+                // $cols[9].innerText += '[' + hours + 'h]' + (isWeekend ? '(周)':'')
+                $cols[9].innerText += ' ✓' + (isWeekend ? '(周)':'')
                 $item.style.backgroundColor = 'yellow'
             }
         })
@@ -68,13 +69,13 @@ Bonus = {
     calculateBonus: function (date, begin, end) {
         let beginTime = new Date(date + ' ' + begin);
         let endTime = new Date(date + ' ' + end);
-        let hours = Math.round((endTime - beginTime) / 1000 / 60 / 60 -1);     // 总上班时长(h)
+        let hours = Math.floor((endTime - beginTime) / 1000 / 60 / 60 -1); // 总上班时长(h)，扣除1小时休息时间，向下取整
         let isWeekend = new Date(date).getDay() % 6 == 0; // 是否周末
 
         let num = 0
 
         if (!isWeekend) {    // A. 正常工作日
-            // 上班总时长够10h
+            // 上班总时长满10h
             // 上班打卡11 AM之前
             // 下班打卡8 PM之后
             num = hours >= 10 &&
