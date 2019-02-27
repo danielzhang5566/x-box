@@ -18,8 +18,6 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "activeTab",
-    "http://kaoqin.jd.com/",
-    "http://erp.jd.com/"
+    "activeTab"
   ]
 }
