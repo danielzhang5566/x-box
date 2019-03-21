@@ -32,6 +32,9 @@ let XBOX = {
                     case 'waiting-for-u':
                         me.waitingForU();
                         break;
+                    case 'setting':
+                      me.jumpToSetting();
+                      break;
                     case 'about':
                         me.about();
                         break;
@@ -53,6 +56,7 @@ let XBOX = {
         //     chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
         // }
     },
+    jumpToSetting() {},
     waitingForU() {
 
     },
