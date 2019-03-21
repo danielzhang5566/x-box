@@ -48,17 +48,17 @@ let XBOX = {
         }
     },
     calculateTaxiBonus() {
-        if(isOnLegalPage('http://kaoqin.j'  + 'd.com/kaoqin/KaoQin')) {
-            // 注入打车计算脚本
-            chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
-        }
+        // if(isOnLegalPage('http://kaoqin.j'  + 'd.com/kaoqin/KaoQin')) {
+        //     // 注入打车计算脚本
+        //     chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
+        // }
     },
     waitingForU() {
 
     },
     about() {
         // 跳转到项目仓库
-        chrome.tabs.executeScript(null, {code: "window.open('https://github.com/zeakhold/x-box')"});
+        chrome.tabs.create({ url: "about.html" })
     }
 }
 
