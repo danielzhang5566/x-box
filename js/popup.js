@@ -19,7 +19,7 @@ let XBOX = {
         // 事件委托
         $menu.addEventListener('click', function (e) {
             // 注意这里html层次为：
-            // ul>li>text ，当点击到text时不会触发事件！！
+            // ul>li>text ，当点击到text时不会触发事件
             // 所以记得在css中运行【点击穿透】
             if (e.target) {
                 switch (e.target.id) {
@@ -56,12 +56,13 @@ let XBOX = {
         //     chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
         // }
     },
-    jumpToSetting() {},
+    jumpToSetting() {
+        chrome.tabs.create({ url: "options.html" })
+    },
     waitingForU() {
 
     },
     about() {
-        // 跳转到项目仓库
         chrome.tabs.create({ url: "about.html" })
     }
 }
