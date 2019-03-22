@@ -1,7 +1,7 @@
 # X-BOX工具箱 :sunny: 
 [![Latest Version](https://img.shields.io/badge/Latest_Version-1.0.5-blue.svg)](https://codeload.github.com/zeakhold/chrome-extension/zip/master) [![Chrome Web Store](https://img.shields.io/badge/Install-_Chrome_Web_Store-brightgreen.svg)](https://chrome.google.com/webstore/detail/x-box/ghjnofmahfaomccknicfliidomnmimdd) 
  
-Chrome浏览器插件，集合一些小工具，完善ing~
+Chrome浏览器扩展，集合一些小工具，完善ing~
 
 ![](./screenshot/Screenshot_1.png)
 
@@ -12,6 +12,9 @@ Chrome浏览器插件，集合一些小工具，完善ing~
 - [x] 加班打车计算功能
 - [x] 自动化打包成zip（供上传Chrome Web Store）
 - [ ] ~~source代码仓库树形展开~~(安全原因废弃)
+- [x] About关于页
+- [x] Options设置页
+- [x] 特殊日期处理，可配置
 - [ ] （陆续添加中...）
 
 
