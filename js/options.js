@@ -7,7 +7,10 @@ const config = {
   asHolidays: ['2019-04-05', '2019-04-06', '2019-04-07', '2019-05-01'],
 
   // 工作日：要当作「工作日」计算的日期，比如元旦前的周末要上班
-  asWorkdays: []
+  asWorkdays: [],
+
+  isUseDefault: true,
+  isNotUseDefault: false
 }
 
 let form = $('form')
@@ -19,17 +22,46 @@ form.addEventListener('submit', function(event) {
   const asHolidaysCustom = convertStrToDays($('#asHolidaysCustom').value)
   const asWorkdaysCustom = convertStrToDays($('#asWorkdaysCustom').value)
 
+  const configChoice1 = $('#configChoice1').checked
+  const configChoice2 = $('#configChoice2').checked
+
   if(!exclusiveDaysCustom || !asHolidaysCustom || !asWorkdaysCustom) {
     alert('输入格式不正确，请检查格式，像「2019-1-1」「2019-01-01,」「2019-01-01，2019-11-11」（中文逗号）都是不合法的。')
+    return false
   }
 
-  const data = {
+  let allConfig = {
     exclusiveDays: config.exclusiveDays.concat(exclusiveDaysCustom),
     asHolidays: config.asHolidays.concat(asHolidaysCustom),
     asWorkdays:  config.asWorkdays.concat(asWorkdaysCustom),
+    isUseDefault: configChoice1 ? true : config.isUseDefault,
+    isNotUseDefault: configChoice2 ? true : config.isNotUseDefault
   }
 
-  // alert(JSON.stringify(data))
+  let userConfig = {
+    exclusiveDays: exclusiveDaysCustom,
+    asHolidays: asHolidaysCustom,
+    asWorkdays:  asWorkdaysCustom,
+    isUseDefault: configChoice1,
+    isNotUseDefault: configChoice2
+  }
+
+  try {
+    allConfig = JSON.stringify(allConfig)
+    userConfig = JSON.stringify(userConfig)
+
+    chrome.storage.sync.set({allConfig}, function() {
+      console.log('保存allConfig成功！', allConfig)
+    })
+
+    chrome.storage.sync.set({userConfig}, function() {
+      console.log('保存userConfig成功！', userConfig)
+    })
+
+    location.reload()
+  }catch (e) {
+    alert('保存失败：JSON序列化配置出错。')
+  }
 
 }, false)
 
@@ -38,6 +70,32 @@ function renderDefaultConfig() {
   $('#exclusiveDaysDefault').innerText = config.exclusiveDays
   $('#asHolidaysDefault').innerText = config.asHolidays
   $('#asWorkdaysDefault').innerText = config.asWorkdays
+
+  $('#configChoice1').checked = true
+}
+
+
+function renderUserConfig() {
+  chrome.storage.sync.get(['userConfig'], function(items) {
+    console.log('获取userConfig成功！', items.userConfig)
+
+    let userConfig = items.userConfig
+
+    try {
+      userConfig = JSON.parse(userConfig)
+    }catch (e) {
+      alert('初始化配置失败：JSON序列化配置出错。')
+    }
+
+    $('#exclusiveDaysCustom').value = userConfig.exclusiveDays || ''
+    $('#asHolidaysCustom').value = userConfig.asHolidays || ''
+    $('#asWorkdaysCustom').value = userConfig.asWorkdays || ''
+
+    if(userConfig.isUseDefault || userConfig.isNotUseDefault) {
+      $('#configChoice1').checked = userConfig.isUseDefault
+      $('#configChoice2').checked = userConfig.isNotUseDefault
+    }
+  })
 }
 
 
@@ -79,4 +137,5 @@ function convertStrToDays(str) {
 
 document.addEventListener("DOMContentLoaded", function (event) {
   renderDefaultConfig()
+  renderUserConfig()
 })
