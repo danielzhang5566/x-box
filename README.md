@@ -9,11 +9,12 @@ Chrome浏览器扩展，集合一些小工具，完善ing~
 ## TODO
 
 - [x] 加班餐补计算功能
-- [x] 加班打车计算功能
+- [x] 加班打车计算功能（03.31下架）
 - [x] 自动化打包成zip（供上传Chrome Web Store）
 - [ ] ~~source代码仓库树形展开~~(安全原因废弃)
 - [x] About关于页
 - [x] Options设置页
+- [x] 默认日期和用户自定义设置存储
 - [x] 特殊日期处理，可配置
 - [ ] （陆续添加中...）
 
@@ -38,3 +39,7 @@ Chrome浏览器扩展，集合一些小工具，完善ing~
     npm run build
 ```
 在根目录生成xxx.zip，即可上传Chrome Web Store
+
+
+## 默认设置
+目前写在代码中，要修改options.js

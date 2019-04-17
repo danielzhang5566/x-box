@@ -12,10 +12,44 @@ function $(elem) {
 Bonus = {
 
     onReady: function () {
-        $('#content').childNodes.length && Bonus.calc()
+        chrome.storage.sync.get(['defaultConfigString', 'userConfigString'], function(items) {
+            const { defaultConfigString, userConfigString } = items
+            console.log('获取defaultConfigString：', defaultConfigString )
+            console.log('获取userConfigString：', userConfigString)
+
+            let defaultConfig
+            let userConfig
+
+            try {
+                defaultConfig = JSON.parse(defaultConfigString)
+                userConfig = JSON.parse(userConfigString)
+            } catch (e) {
+                console.log('初始化配置失败：JSON序列化配置出错。')
+            }
+
+            if(!userConfig) userConfig = {
+                exclusiveDays: [],
+                asHolidays: [],
+                asWorkdays: []
+            }
+
+            if(defaultConfig) {
+                const allConfig = {
+                    exclusiveDays: userConfig.isNotUseDefault ? userConfig.exclusiveDays : defaultConfig.exclusiveDays.concat(userConfig.exclusiveDays),
+                    asHolidays: userConfig.isNotUseDefault ? userConfig.asHolidays : defaultConfig.asHolidays.concat(userConfig.asHolidays),
+                    asWorkdays:  userConfig.isNotUseDefault ? userConfig.asWorkdays : defaultConfig.asWorkdays.concat(userConfig.asWorkdays)
+                }
+
+                $('#content').childNodes.length && Bonus.calc(allConfig)
+            }else {
+                alert('初始化配置defaultConfig失败：将忽略配置options进行计算。')
+            }
+        })
     },
 
-    calc: function () {
+    calc: function (allConfig) {
+        console.log('获取的配置：', allConfig)
+        const { exclusiveDays, asHolidays, asWorkdays } = allConfig
         const MONEY_PRE_DAY = 15    // 每日餐补金额
         let overDays = 0            // 加班天数
         let overNumCounts = 0       // 加班获取多少份15元
@@ -23,23 +57,31 @@ Bonus = {
         $('#content').childNodes.forEach(($item, i) => {
             let $cols = $item.childNodes,
                 date = $cols[6].innerText.replace(/-/g, '/'),
+                originalDate = $cols[6].innerText,
                 begin = $cols[8].innerText,
                 end = $cols[9].innerText;
 
-            const { num, isWeekend, hours } =  Bonus.calculateBonus(date, begin, end)
+            const { num, hours, type } =  Bonus.calculateBonus(date, originalDate, begin, end, exclusiveDays, asHolidays, asWorkdays)
 
-            if (begin && end && num) {
-                overDays += 1
+            $cols[6].innerText += type
+
+            if (begin && end) {
                 overNumCounts += num
 
-                $cols[1].innerText = '✓ ' + $cols[1].innerText
-                // $cols[9].innerText += '[' + hours + 'h]' + (isWeekend ? '(周)':'')
-                $cols[9].innerText += ' ✓' + (isWeekend ? '(周)':'')
-                $item.style.backgroundColor = 'yellow'
+                $cols[9].innerText += '[' + hours + 'h]'
+
+                if (num) {
+                    overDays += 1
+                    $cols[1].innerText = '✓ ' + $cols[1].innerText
+                    $item.style.backgroundColor = 'yellow'
+                }
             }
         })
 
-        $('#record').innerHTML += `<div style="margin: 30px 0 10px; font-size: 24px;text-align: center;">加班${overDays}天，可申请 ${overNumCounts * MONEY_PRE_DAY}¥</div>`
+        const specialDaysString = exclusiveDays.concat(asHolidays, asWorkdays).toString()
+
+        // $('#record').innerHTML += `<div style="margin: 30px 0 10px; font-size: 24px;text-align: center;">加班${overDays}天，可申请 ${overNumCounts * MONEY_PRE_DAY}¥</div>`
+        $('#record').innerHTML += `<div style="margin: 10px 0 10px; font-size: 12px;">设置的特殊日期：${specialDaysString}</div>`
 
         setTimeout(() => {
             overDays ?
@@ -59,22 +101,51 @@ Bonus = {
      * A. 正常工作日，以9点上班为准，加班到20::00可报销餐补（上班晚于9点则顺延, 减去中午休息一小时相当于上班10h）
      * B. 周末及节假日，加班时间满4个小时可报销15，满8个小时报销30
      *
-     * @param  {String} date   加班日期
-     * @param  {String} begin  上班打卡时间
-     * @param  {String} end    下班打卡时间
+     * @param  {String} date           日期
+     * @param  {String} originalDate   原始日期
+     * @param  {String} begin          上班打卡时间
+     * @param  {String} end            下班打卡时间
      * @return {Object} .num 返回是否可报销餐补份数（1份 = 15元）
-     *                  .isWeekend 是否周末
      *                  .hours 小时数
+     *                  .type 类型：[除]/[假]/[班]
      */
-    calculateBonus: function (date, begin, end) {
+    calculateBonus: function (date, originalDate, begin, end, exclusiveDays, asHolidays, asWorkdays) {
         let beginTime = new Date(date + ' ' + begin);
         let endTime = new Date(date + ' ' + end);
         let hours = Math.floor((endTime - beginTime) / 1000 / 60 / 60 -1); // 总上班时长(h)，扣除1小时休息时间，向下取整
         let isWeekend = new Date(date).getDay() % 6 == 0; // 是否周末
+        let type = ''
 
         let num = 0
 
-        if (!isWeekend) {    // A. 正常工作日
+        let isExclusiveDay = false
+        let isHoliday = isWeekend
+
+        exclusiveDays.some(item => {
+            if (item === originalDate) {
+                isExclusiveDay = true
+                return true
+            }
+        })
+
+        asHolidays.some(item => {
+            if (item === originalDate) {
+                isHoliday = true
+                return true
+            }
+        })
+
+        asWorkdays.some(item => {
+            if (item === originalDate) {
+                isHoliday = false
+                return true
+            }
+        })
+
+        if (isExclusiveDay) {
+            return { num: 0, type: '[排除日]', hours }
+        } else if (!isHoliday) {    // A. 正常工作日
+            type = '[工作日]'
             // 上班总时长满10h
             // 上班打卡11 AM之前
             // 下班打卡8 PM之后
@@ -82,8 +153,9 @@ Bonus = {
                 beginTime.getHours() < 11 &&
                 endTime.getHours() >= 20
                   ? 1 : 0
-        } else {            // B. 周末（节假日偷懒就不算了）
-            ++hours // 周末不扣除1小时休息时间
+        } else {            // B. 周末或节假日
+            type = '[节假日]'
+            ++hours // 不扣除1小时休息时间了
 
             // 上班总时 满4h --> 15元，满8h --> 15元 x 2份
             num = hours < 4
@@ -93,7 +165,7 @@ Bonus = {
 
         return {
             num,
-            isWeekend,
+            type,
             hours
         }
     }

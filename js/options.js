@@ -1,5 +1,5 @@
 // 默认的日期配置
-const config = {
+const defaultConfig = {
   // 排除日期：不纳入计算的日期，比如某些特殊日期打卡了但不计算
   exclusiveDays: [],
 
@@ -30,14 +30,6 @@ form.addEventListener('submit', function(event) {
     return false
   }
 
-  let allConfig = {
-    exclusiveDays: config.exclusiveDays.concat(exclusiveDaysCustom),
-    asHolidays: config.asHolidays.concat(asHolidaysCustom),
-    asWorkdays:  config.asWorkdays.concat(asWorkdaysCustom),
-    isUseDefault: configChoice1 ? true : config.isUseDefault,
-    isNotUseDefault: configChoice2 ? true : config.isNotUseDefault
-  }
-
   let userConfig = {
     exclusiveDays: exclusiveDaysCustom,
     asHolidays: asHolidaysCustom,
@@ -47,15 +39,10 @@ form.addEventListener('submit', function(event) {
   }
 
   try {
-    allConfig = JSON.stringify(allConfig)
-    userConfig = JSON.stringify(userConfig)
+    userConfigString = JSON.stringify(userConfig)
 
-    chrome.storage.sync.set({allConfig}, function() {
-      console.log('保存allConfig成功！', allConfig)
-    })
-
-    chrome.storage.sync.set({userConfig}, function() {
-      console.log('保存userConfig成功！', userConfig)
+    chrome.storage.sync.set({userConfigString}, function() {
+      console.log('保存userConfig：', userConfigString)
     })
 
     location.reload()
@@ -67,33 +54,38 @@ form.addEventListener('submit', function(event) {
 
 
 function renderDefaultConfig() {
-  $('#exclusiveDaysDefault').innerText = config.exclusiveDays
-  $('#asHolidaysDefault').innerText = config.asHolidays
-  $('#asWorkdaysDefault').innerText = config.asWorkdays
+  $('#exclusiveDaysDefault').innerText = defaultConfig.exclusiveDays
+  $('#asHolidaysDefault').innerText = defaultConfig.asHolidays
+  $('#asWorkdaysDefault').innerText = defaultConfig.asWorkdays
 
   $('#configChoice1').checked = true
 }
 
 
 function renderUserConfig() {
-  chrome.storage.sync.get(['userConfig'], function(items) {
-    console.log('获取userConfig成功！', items.userConfig)
+  chrome.storage.sync.get(['userConfigString'], function(items) {
+    const { userConfigString } = items
+    console.log('获取userConfigString：', userConfigString)
 
-    let userConfig = items.userConfig
+    if(userConfigString) {
+      let userConfig
 
-    try {
-      userConfig = JSON.parse(userConfig)
-    }catch (e) {
-      alert('初始化配置失败：JSON序列化配置出错。')
-    }
+      try {
+        userConfig = JSON.parse(userConfigString)
+      }catch (e) {
+        alert('初始化配置失败：JSON序列化配置出错。')
+      }
 
-    $('#exclusiveDaysCustom').value = userConfig.exclusiveDays || ''
-    $('#asHolidaysCustom').value = userConfig.asHolidays || ''
-    $('#asWorkdaysCustom').value = userConfig.asWorkdays || ''
+      $('#exclusiveDaysCustom').value = userConfig.exclusiveDays || ''
+      $('#asHolidaysCustom').value = userConfig.asHolidays || ''
+      $('#asWorkdaysCustom').value = userConfig.asWorkdays || ''
 
-    if(userConfig.isUseDefault || userConfig.isNotUseDefault) {
-      $('#configChoice1').checked = userConfig.isUseDefault
-      $('#configChoice2').checked = userConfig.isNotUseDefault
+      if(userConfig.isUseDefault || userConfig.isNotUseDefault) {
+        $('#configChoice1').checked = userConfig.isUseDefault
+        $('#configChoice2').checked = userConfig.isNotUseDefault
+      }
+    }else {
+      console.log('==>没有获取到：userConfigString')
     }
   })
 }
@@ -136,6 +128,12 @@ function convertStrToDays(str) {
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
-  renderDefaultConfig()
-  renderUserConfig()
+  defaultConfigString = JSON.stringify(defaultConfig)
+
+  chrome.storage.sync.set({defaultConfigString}, function() {
+    console.log('设置defaultConfigString：', defaultConfigString)
+
+    renderDefaultConfig()
+    renderUserConfig()
+  })
 })

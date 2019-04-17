@@ -45,13 +45,13 @@ let XBOX = {
         });
     },
     calculateMealBonus() {
-        if(isOnLegalPage('http://kaoqin.j'  + 'd.com/kaoqin/KaoQin')) {
+        if(isOnLegalPage('http://kaoqin.jd.com/kaoqin/KaoQin')) {
             // 注入餐补计算脚本
             chrome.tabs.executeScript(null, {file: "./js/insert_script_meal.js"});
         }
     },
     calculateTaxiBonus() {
-        // if(isOnLegalPage('http://kaoqin.j'  + 'd.com/kaoqin/KaoQin')) {
+        // if(isOnLegalPage('http://kaoqin.jd.com/kaoqin/KaoQin')) {
         //     // 注入打车计算脚本
         //     chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
         // }
