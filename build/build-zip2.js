@@ -43,6 +43,7 @@ archive.pipe(output)
 // append files
 archive.file('manifest.json', { name: 'manifest.json' })
 archive.file('popup.html', { name: 'popup.html' })
+archive.file('options.html', { name: 'options.html' })
 
 // append files from a sub-directory, putting its contents at the root of archive
 archive.directory('css')
