@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "X-BOX",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Chrome浏览器插件，集合一些小工具，完善ing~",
   "icons": {
     "16": "img/icon16.png",
