@@ -9,22 +9,34 @@ function $(elem) {
     return document.querySelector(elem);
 }
 
+// 默认的日期配置
+const defaultConfig = {
+    // 排除日期：不纳入计算的日期，比如某些特殊日期打卡了但不计算
+    exclusiveDays: [],
+
+    // 节假日：要当作「节假日」计算的日期，比如元旦节来公司加班呢
+    asHolidays: ['2019-04-05', '2019-04-06', '2019-04-07', '2019-05-01'],
+
+    // 工作日：要当作「工作日」计算的日期，比如元旦前的周末要上班
+    asWorkdays: [],
+
+    isUseDefault: true,
+    isNotUseDefault: false
+}
+
 Bonus = {
 
     onReady: function () {
-        chrome.storage.sync.get(['defaultConfigString', 'userConfigString'], function(items) {
-            const { defaultConfigString, userConfigString } = items
-            console.log('获取defaultConfigString：', defaultConfigString )
+        chrome.storage.sync.get(['userConfigString'], function(items) {
+            const { userConfigString } = items
             console.log('获取userConfigString：', userConfigString)
 
-            let defaultConfig
             let userConfig
 
             try {
-                defaultConfig = JSON.parse(defaultConfigString)
                 userConfig = JSON.parse(userConfigString)
             } catch (e) {
-                console.log('初始化配置失败：JSON序列化配置出错。')
+                console.log('初始化用户配置失败，userConfig不合法或者未设置。')
             }
 
             if(!userConfig) userConfig = {
@@ -33,17 +45,13 @@ Bonus = {
                 asWorkdays: []
             }
 
-            if(defaultConfig) {
-                const allConfig = {
-                    exclusiveDays: userConfig.isNotUseDefault ? userConfig.exclusiveDays : defaultConfig.exclusiveDays.concat(userConfig.exclusiveDays),
-                    asHolidays: userConfig.isNotUseDefault ? userConfig.asHolidays : defaultConfig.asHolidays.concat(userConfig.asHolidays),
-                    asWorkdays:  userConfig.isNotUseDefault ? userConfig.asWorkdays : defaultConfig.asWorkdays.concat(userConfig.asWorkdays)
-                }
-
-                $('#content').childNodes.length && Bonus.calc(allConfig)
-            }else {
-                alert('初始化配置defaultConfig失败：将忽略配置options进行计算。')
+            const allConfig = {
+                exclusiveDays: userConfig.isNotUseDefault ? userConfig.exclusiveDays : defaultConfig.exclusiveDays.concat(userConfig.exclusiveDays),
+                asHolidays: userConfig.isNotUseDefault ? userConfig.asHolidays : defaultConfig.asHolidays.concat(userConfig.asHolidays),
+                asWorkdays:  userConfig.isNotUseDefault ? userConfig.asWorkdays : defaultConfig.asWorkdays.concat(userConfig.asWorkdays)
             }
+
+            $('#content').childNodes.length && Bonus.calc(allConfig)
         })
     },
 
@@ -81,7 +89,7 @@ Bonus = {
         const specialDaysString = exclusiveDays.concat(asHolidays, asWorkdays).toString()
 
         // $('#record').innerHTML += `<div style="margin: 30px 0 10px; font-size: 24px;text-align: center;">加班${overDays}天，可申请 ${overNumCounts * MONEY_PRE_DAY}¥</div>`
-        $('#record').innerHTML += `<div style="margin: 10px 0 10px; font-size: 12px;">设置的特殊日期：${specialDaysString}</div>`
+        $('#record').innerHTML += `<div style="margin: 10px 0 10px; font-size: 12px;">已设置的特殊日期：${specialDaysString || '（无）'}</div>`
 
         setTimeout(() => {
             overDays ?

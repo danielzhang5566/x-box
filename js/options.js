@@ -128,12 +128,6 @@ function convertStrToDays(str) {
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
-  defaultConfigString = JSON.stringify(defaultConfig)
-
-  chrome.storage.sync.set({defaultConfigString}, function() {
-    console.log('设置defaultConfigString：', defaultConfigString)
-
-    renderDefaultConfig()
-    renderUserConfig()
-  })
+  renderDefaultConfig()
+  renderUserConfig()
 })
