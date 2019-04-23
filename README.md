@@ -1,5 +1,5 @@
 # X-BOX工具箱 :sunny: 
-[![Latest Version](https://img.shields.io/badge/Latest_Version-1.1.2-blue.svg)](https://codeload.github.com/zeakhold/chrome-extension/zip/master) [![Chrome Web Store](https://img.shields.io/badge/Install-_Chrome_Web_Store-brightgreen.svg)](https://chrome.google.com/webstore/detail/x-box/ghjnofmahfaomccknicfliidomnmimdd) 
+[![Latest Version](https://img.shields.io/badge/Latest_Version-1.1.3-blue.svg)](https://codeload.github.com/zeakhold/chrome-extension/zip/master) [![Chrome Web Store](https://img.shields.io/badge/Install-_Chrome_Web_Store-brightgreen.svg)](https://chrome.google.com/webstore/detail/x-box/ghjnofmahfaomccknicfliidomnmimdd) 
  
 Chrome浏览器扩展，集合一些小工具，完善ing~
 
