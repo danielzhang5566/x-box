@@ -49,6 +49,7 @@ archive.file('about.html', { name: 'about.html' })
 // append files from a sub-directory, putting its contents at the root of archive
 archive.directory('css')
 archive.directory('img')
+archive.directory('screenshot')
 archive.directory('js')
 
 // finalize the archive (ie we are done appending files but streams have to finish yet)
