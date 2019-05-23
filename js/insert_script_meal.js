@@ -88,8 +88,8 @@ Bonus = {
 
         const specialDaysString = exclusiveDays.concat(asHolidays, asWorkdays).toString()
 
-        // $('#record').innerHTML += `<div style="margin: 30px 0 10px; font-size: 24px;text-align: center;">加班${overDays}天，可申请 ${overNumCounts * MONEY_PRE_DAY}¥</div>`
         $('#record').innerHTML += `<div style="margin: 10px 0 10px; font-size: 12px;">已设置的特殊日期：${specialDaysString || '（无）'}</div>`
+        $('#record').innerHTML += `<div style="margin: 30px 0; font-size: 24px;text-align: center;">加班${overDays}天，可申请 ${overNumCounts * MONEY_PRE_DAY}¥</div>`
 
         setTimeout(() => {
             overDays ?
