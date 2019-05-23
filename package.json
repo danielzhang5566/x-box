@@ -1,6 +1,6 @@
 {
   "name": "x-box",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Chrome浏览器插件，集合一些小工具，完善ing~",
   "main": "index.js",
   "scripts": {
