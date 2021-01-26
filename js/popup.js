@@ -51,10 +51,10 @@ let XBOX = {
         }
     },
     calculateTaxiBonus() {
-        // if(isOnLegalPage('http://kaoqin.jd.com/kaoqin/KaoQin')) {
-        //     // 注入打车计算脚本
-        //     chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
-        // }
+        if(isOnLegalPage('http://kaoqin.jd.com/kaoqin/KaoQin')) {
+            // 注入打车计算脚本
+            chrome.tabs.executeScript(null, {file: "./js/insert_script_taxi.js"});
+        }
     },
     jumpToSetting() {
         chrome.tabs.create({ url: "options.html" })
