@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "X-BOX",
-  "version": "1.1.7",
-  "description": "Chrome浏览器插件，集合一些小工具，完善ing~",
+  "version": "1.1.9",
+  "description": "X-Box 工具箱，可以计算加班打卡时间，可以自定义配置工作日、节假日。",
   "icons": {
     "16": "img/icon16.png",
     "48": "img/icon48.png",
