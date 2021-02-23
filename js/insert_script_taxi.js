@@ -173,10 +173,10 @@ Bonus = {
         let num = 0
         let type = ''
 
-        // 有效工作时长/h（向下取整，保留1位小数）
+        // 有效工作时长/h（向下取整，保留1位小数，注意后面浮点数运算的时候，需要先转为整数）
         let hours = Math.floor(((endDate.getTime() - beginDate.getTime()) / 1000 / 60 / 60) * 10) / 10
         // 加班打车需要扣除2小时休息时间
-        hours -= 2
+        hours = (hours * 10 - 20) / 10
 
         exclusiveDays.some(item => {
             if (item === originalDate) {
@@ -216,7 +216,7 @@ Bonus = {
             }
         } else {            // B. 周末或节假日
             type = '[节假日]'
-            hours += 1 // 节假日了多幸苦，就扣1小时吧
+            hours = (hours * 10 + 10) / 10 // 节假日了多幸苦，就扣1小时吧
             if (hours >= 8) {
                 num = 1
             }
