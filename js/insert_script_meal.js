@@ -26,6 +26,32 @@ function $(elem) {
     return document.querySelector(elem);
 }
 
+/**
+ * 转换时间为秒
+ *
+ * @param  {String} time     时间，格式：hh:mm:ss 或 hh:mm
+ * @return {Number} 返回秒数
+ *
+ */
+function timeToSecond (time) {
+    const tmp = time && time.split(':')
+    let h = 0, m = 0, s = 0
+
+    if(!tmp || tmp.length < 2 || tmp.length > 3) return 0
+
+    if (tmp.length === 2) {
+        h = +tmp[0]
+        m = +tmp[1]
+        s = 0
+    } else if (tmp.length === 3) {
+        h = +tmp[0]
+        m = +tmp[1]
+        s = +tmp[2]
+    }
+
+    return h * 3600 + m * 60 + s
+}
+
 Bonus = {
 
     onReady: function () {
@@ -96,8 +122,8 @@ Bonus = {
 
         setTimeout(() => {
             overDays ?
-                alert('满足【加班餐补】有 ' + overDays + ' 天，可申请 ￥' + overNumCounts * MONEY_PRE_DAY + ' 元') :
-                alert('未检测到加班，请刷新页面重试～')
+                alert('满足【加班餐补】有 ' + overDays + ' 天，可申请 ￥' + overNumCounts * MONEY_PRE_DAY + ' 元\n请注意核对') :
+                alert('未检测到满足加班餐补条件，努力加班吧：）')
         }, 0)
     },
 
@@ -109,25 +135,32 @@ Bonus = {
 
     /**
      * 计算获得加班餐补份数（一份 = 15元）
-     * A. 正常工作日，以9点上班为准，加班到20::00可报销餐补（上班晚于9点则顺延, 减去中午休息一小时相当于上班10h）
+     * A. 正常工作日，以9点上班为准，加班到20:00可报销餐补（上班晚于9点则顺延, 减去中午休息一小时相当于上班10h）
      * B. 周末及节假日，加班时间满4个小时可报销15，满8个小时报销30
      *
-     * @param  {String} date           日期
-     * @param  {String} originalDate   原始日期
-     * @param  {String} begin          上班打卡时间
-     * @param  {String} end            下班打卡时间
+     * @param  {String} date           日期，格式：YYYY/MM/DD
+     * @param  {String} originalDate   原始日期，格式：YYYY-MM-DD
+     * @param  {String} begin          上班打卡时间，格式：hh:mm:ss
+     * @param  {String} end            下班打卡时间，格式：hh:mm:ss
      * @return {Object} .num 返回是否可报销餐补份数（1份 = 15元）
      *                  .hours 小时数
      *                  .type 类型：[除]/[假]/[班]
+     *
+     * 注：暂不支持计算"跨夜加班"
      */
     calculateBonus: function (date, originalDate, begin, end, exclusiveDays, asHolidays, asWorkdays) {
-        let beginTime = new Date(date + ' ' + begin);
+        let beginTime = new Date(date + ' ' + begin) // 格式如：Fri Jan 01 2021 10:00:00 GMT+0800 (China Standard Time)
         let endTime = new Date(date + ' ' + end);
-        let hours = Math.floor((endTime - beginTime) / 1000 / 60 / 60 -1); // 总上班时长(h)，扣除1小时休息时间，向下取整
         let isWeekend = new Date(date).getDay() % 6 == 0; // 是否周末
+        let num = 0
         let type = ''
 
-        let num = 0
+        // 总上班时长/h（向下取整）
+        let hours = Math.floor((endTime - beginTime) / 1000 / 60 / 60)
+        // 如果上班起止时间跨越中午（12:00-13:00），需要扣除1小时休息时间
+        if (timeToSecond(begin) < timeToSecond('12:00') && timeToSecond(end) > timeToSecond('13:00')) {
+            hours -= 1
+        }
 
         let isExclusiveDay = false
         let isHoliday = isWeekend
@@ -154,9 +187,11 @@ Bonus = {
         })
 
         if (isExclusiveDay) {
-            return { num: 0, type: '[排除日]', hours }
+            type = '[排除日]'
+            hours = 0
         } else if (!isHoliday) {    // A. 正常工作日
             type = '[工作日]'
+
             // 上班总时长满10h
             // 上班打卡11 AM之前
             // 下班打卡8 PM之后
@@ -166,7 +201,6 @@ Bonus = {
                   ? 1 : 0
         } else {            // B. 周末或节假日
             type = '[节假日]'
-            ++hours // 不扣除1小时休息时间了
 
             // 上班总时 满4h --> 15元，满8h --> 15元 x 2份
             num = hours < 4
