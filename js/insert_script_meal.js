@@ -133,37 +133,53 @@ Bonus = {
         })
     },
 
+    /*
+    餐补报销条件：
+
+        工作日：
+            工作时长满 10 小时可申请加班餐补：15 元
+
+        休息日：
+            工作时长满 4 小时可申请加班餐补：15 元
+            工作时长满 8 小时可申请加班餐补：30 元
+
+        工作时长计算规则：
+            工作时长 = 下班打卡时间 - 上班打卡时间 - 1（1小时为午饭休息时间，如果有）
+
+        例如，
+            「9:00 - 20:00」、「10:00 - 21:00」
+        均可报销餐补。
+    * */
+
     /**
-     * 计算获得加班餐补份数（一份 = 15元）
-     * A. 正常工作日，以9点上班为准，加班到20:00可报销餐补（上班晚于9点则顺延, 减去中午休息一小时相当于上班10h）
-     * B. 周末及节假日，加班时间满4个小时可报销15，满8个小时报销30
+     * 计算当天获得加班餐补份数（一份 = 15元）
      *
      * @param  {String} date           日期，格式：YYYY/MM/DD
      * @param  {String} originalDate   原始日期，格式：YYYY-MM-DD
      * @param  {String} begin          上班打卡时间，格式：hh:mm:ss
      * @param  {String} end            下班打卡时间，格式：hh:mm:ss
      * @return {Object} .num 返回是否可报销餐补份数（1份 = 15元）
-     *                  .hours 小时数
-     *                  .type 类型：[除]/[假]/[班]
+     *                  .hours 工作时长，小时数
+     *                  .type 类型：[排除日]/[节假日]/[工作日]
      *
      * 注：暂不支持计算"跨夜加班"
      */
     calculateBonus: function (date, originalDate, begin, end, exclusiveDays, asHolidays, asWorkdays) {
-        let beginTime = new Date(date + ' ' + begin) // 格式如：Fri Jan 01 2021 10:00:00 GMT+0800 (China Standard Time)
-        let endTime = new Date(date + ' ' + end);
+        let beginDate = new Date(date + ' ' + begin) // 格式如：Fri Jan 01 2021 10:00:00 GMT+0800 (China Standard Time)
+        let endDate = new Date(date + ' ' + end);
         let isWeekend = new Date(date).getDay() % 6 == 0; // 是否周末
+        let isExclusiveDay = false
+        let isHoliday = isWeekend
+
         let num = 0
         let type = ''
 
-        // 总上班时长/h（向下取整）
-        let hours = Math.floor((endTime - beginTime) / 1000 / 60 / 60)
+        // 工作时长/h（向下取整）
+        let hours = Math.floor((endDate.getTime() - beginDate.getTime()) / 1000 / 60 / 60)
         // 如果上班起止时间跨越中午（12:00-13:00），需要扣除1小时休息时间
         if (timeToSecond(begin) < timeToSecond('12:00') && timeToSecond(end) > timeToSecond('13:00')) {
             hours -= 1
         }
-
-        let isExclusiveDay = false
-        let isHoliday = isWeekend
 
         exclusiveDays.some(item => {
             if (item === originalDate) {
@@ -196,8 +212,8 @@ Bonus = {
             // 上班打卡11 AM之前
             // 下班打卡8 PM之后
             num = hours >= 10 &&
-                beginTime.getHours() < 11 &&
-                endTime.getHours() >= 20
+                beginDate.getHours() < 11 &&
+                endDate.getHours() >= 20
                   ? 1 : 0
         } else {            // B. 周末或节假日
             type = '[节假日]'
