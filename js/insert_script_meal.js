@@ -91,12 +91,13 @@ Bonus = {
         const specialDaysString = exclusiveDays.concat(asHolidays, asWorkdays).toString()
 
         $('#record').innerHTML += `<div style="margin: 10px 0 10px; font-size: 12px;">已设置的特殊日期：${specialDaysString || '（无）'}</div>`
-        $('#record').innerHTML += `<div style="margin: 30px 0; font-size: 24px;text-align: center;">加班${overDays}天，可申请 ${overNumCounts * MONEY_PRE_DAY}¥</div>`
+        $('#record').innerHTML += `<div style="margin: 10px 0 10px; font-size: 12px;">请留意节假日，调休日等是否正确计算，可在「特殊日期设置」中配置日期。</div>`
+        $('#record').innerHTML += `<div style="margin: 30px 0; font-size: 24px;text-align: center;">满足【加班餐补】有${overDays}天，可申请 ${overNumCounts * MONEY_PRE_DAY}¥</div>`
 
         setTimeout(() => {
             overDays ?
-                alert('补贴提醒：' + '加班 ' + overDays + ' 天,获取 ￥' + overNumCounts * MONEY_PRE_DAY + ' 元') :
-                alert('补贴提醒：' + '未检测到加班，请刷新页面重试～')
+                alert('满足【加班餐补】有 ' + overDays + ' 天，可申请 ￥' + overNumCounts * MONEY_PRE_DAY + ' 元') :
+                alert('未检测到加班，请刷新页面重试～')
         }, 0)
     },
 
