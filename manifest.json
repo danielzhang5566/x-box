@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "X-BOX",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "X-Box 工具箱，可以计算加班打卡时间，可以自定义配置工作日、节假日。",
   "icons": {
     "16": "img/icon16.png",
