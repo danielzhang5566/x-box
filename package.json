@@ -14,6 +14,6 @@
   "license": "ISC",
   "devDependencies": {
     "archiver": "^3.0.0",
-    "jszip": "^3.1.5"
+    "jszip": "^3.7.0"
   }
 }
